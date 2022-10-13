@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  # These are the configurations for our Node app
+  # When Docker Compose starts this container it will automatically
+  # use the Dockerfile in the directory to configure it
+  app:
+    build: .
+    depends_on:
+      # Our app does not work without our database
+      # so this ensures our database is loaded first
+      - postgres
+    ports:
+      - "8080:8080"
+    volumes:
+      # Maps our current project directory `.` to
+      # our working directory in the container
+      - ./:/app/
+
+  # This is the configuration for our PostgreSQL database container
+  # Note the `postgres` name is important, in out Node app when we refer
+  # to  `host: "postgres"` that value is mapped on the network to the 
+  # address of this container.
+  postgres:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      # You can set the value of environment variables
+      # in your docker-compose.yml file
+      # Our Node app will use these to connect
+      # to the database
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=suissdb
+    ports:
+      # Standard port for PostgreSQL databases
+      - "5050:5432"
+    
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
