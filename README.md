@@ -22,4 +22,6 @@ Enter password: `root` as indicated in `docker-compose.yml`
 
 ## Running the App
 
+Install [Docker](https://www.docker.com/) and make sure it is running. To start the project in Docker, run `docker compose up` in the root directory of this project.
+
 Use `docker compose up` to run the application and access `http://localhost:8080`.
