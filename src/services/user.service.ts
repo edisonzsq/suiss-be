@@ -4,15 +4,26 @@ import PrismaInstance from "../prisma";
 
 export class UserService implements CrudService {
     async get(id: string):Promise<User> {
-        return await PrismaInstance.user.findUnique({
-            where:{
-                id:id
-            }
-        });        
+
+        try{
+            return await PrismaInstance.user.findUnique({
+                where:{
+                    id:id
+                }
+            });   
+        }catch(e){
+            throw `Unable to get user id ${id}`;
+        }
+             
     }
 
     async list(): Promise<User[]> {
-        return await PrismaInstance.user.findMany();
+        try{
+            return await PrismaInstance.user.findMany();
+        }catch(e){
+            throw `Unable to list users`;
+        }
+        
     }
 
     async create(obj: User):Promise<User> {
