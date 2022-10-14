@@ -20,8 +20,22 @@ psql -h localhost -d suissdb  -p 5050 -U root -W
 
 Enter password: `root` as indicated in `docker-compose.yml`
 
+## Migration
+
+If you pull a new source code that has new migration files `./prisma/migrations`, you have to run 
+
+```sh
+npx prisma migrate deploy
+```
+
+> The best practice recommended from Prisma is never change historical migration script. If we made a mistake in a migration, we should create a new mirgration (move forward) to correct it. Then, use the `squash` feature to merge those migrations.
+
 ## Running the App
 
 Install [Docker](https://www.docker.com/) and make sure it is running. To start the project in Docker, run `docker compose up` in the root directory of this project.
 
 Use `docker compose up` to run the application and access `http://localhost:8080`.
+
+```sh
+docker compose up
+```

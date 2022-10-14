@@ -4,10 +4,10 @@ WORKDIR /app
 
 COPY package*.json ./
 
-COPY tsconfig.json .
+COPY tsconfig.json ./
 
 RUN npm ci
 
 COPY src .
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]

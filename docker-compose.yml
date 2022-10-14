@@ -1,3 +1,5 @@
+# This docker-compose.yml is only for development environment.
+
 version: '3.8'
 services:
   # These are the configurations for our Node app
@@ -7,7 +9,7 @@ services:
     build: .
     depends_on:
       # Our app does not work without our database
-      # so this ensures our database is loaded first
+      # so this ensures our ddeatabase is loaded first
       - postgres
     ports:
       - "8080:8080"
