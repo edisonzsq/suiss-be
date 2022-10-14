@@ -7,6 +7,7 @@
 - Express
 - Prisma
 - Postgres@14
+- Docker
 
 ## Database
 
@@ -38,4 +39,105 @@ Use `docker compose up` to run the application and access `http://localhost:8080
 
 ```sh
 docker compose up
+```
+
+If you change some config file apart from code, you might need to rebuild the image. Then, use `docker compose up --build`.
+
+```sh
+docker compose up --build
+```
+
+## WARNING
+
+If you are using M1 Chip, there is incompatibility issue between Docker Alpine + Mac M1 Chip + Prisma Query Library. Read more [here](https://github.com/prisma/prisma/issues/9572).
+
+There is no solutions tentatively other than simply:
+
+### (1) Only use Postgres in `docker-compose.yml`
+
+```yml
+# This docker-compose.yml is only for development environment.
+
+version: '3.8'
+services:
+
+  postgres:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      # You can set the value of environment variables
+      # in your docker-compose.yml file
+      # Our Node app will use these to connect
+      # to the database
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=suissdb
+    ports:
+      # Standard port for PostgreSQL databases
+      - "5050:5432"
+    
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+```
+
+And run:
+
+```sh
+docker compose up # add --build flag to rebuild image when needed
+```
+
+The original `docker-compose.yml` file:
+
+```yml
+# This docker-compose.yml is only for development environment.
+
+version: '3.8'
+services:
+  # These are the configurations for our Node app
+  # When Docker Compose starts this container it will automatically
+  # use the Dockerfile in the directory to configure it
+  app:
+    build: .
+    depends_on:
+      # Our app does not work without our database
+      # so this ensures our ddeatabase is loaded first
+      - postgres
+    ports:
+      - "8080:8080"
+    volumes:
+      # Maps our current project directory `.` to
+      # our working directory in the container
+      - .:/app
+      - ./src:/app/src
+
+  # This is the configuration for our PostgreSQL database container
+  # Note the `postgres` name is important, in out Node app when we refer
+  # to  `host: "postgres"` that value is mapped on the network to the 
+  # address of this container.
+  postgres:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      # You can set the value of environment variables
+      # in your docker-compose.yml file
+      # Our Node app will use these to connect
+      # to the database
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=suissdb
+    ports:
+      # Standard port for PostgreSQL databases
+      - "5050:5432"
+    
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+```
+
+### (2) Run the application without docker
+
+Run the following commands on terminal to start application:
+
+```sh
+npm install
+npm run dev
 ```
