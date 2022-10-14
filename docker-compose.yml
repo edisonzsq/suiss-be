@@ -16,7 +16,8 @@ services:
     volumes:
       # Maps our current project directory `.` to
       # our working directory in the container
-      - ./:/app/
+      - .:/app
+      - ./src:/app/src
 
   # This is the configuration for our PostgreSQL database container
   # Note the `postgres` name is important, in out Node app when we refer
