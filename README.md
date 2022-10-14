@@ -9,6 +9,22 @@
 - Postgres@14
 - Docker
 
+## Quick Start
+
+You will need 2 Terminals.
+
+Terminal 1:
+```sh
+docker compose up --build
+```
+
+Terminal 2:
+```sh
+npm install
+npx prisma migrate deploy # push migration changes to postgres container
+npm run dev # start the app
+```
+
 ## Database
 
 Instead of connecting to a database installed on your local machine, this project uses a postgres docker image to run as your database. The data of the database within the container is being mapped to `./postgres-data` so that when you restart the docker, all the data are persisted.
