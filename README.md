@@ -22,6 +22,7 @@ Terminal 2:
 ```sh
 npm install
 npx prisma migrate deploy # push migration changes to postgres container
+npx prisma generate # generate an instance of prisma in node_modules based on ./prisma/schema.prisma file
 npm run dev # start the app
 ```
 
