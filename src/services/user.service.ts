@@ -1,6 +1,6 @@
 import { CrudService } from "./interfaces";
 import { User } from "@prisma/client";
-import PrismaInstance from "../prisma";
+import PrismaInstance from "../databases";
 
 export class UserService implements CrudService {
     async get(id: string):Promise<User> {
