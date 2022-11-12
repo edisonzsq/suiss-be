@@ -5,6 +5,18 @@ import httpStatus from "http-status";
 
 const service = new UserService();
 
+export const dummy = async (req: Request, res:Response) => {
+
+    // try {
+    //     res.send("PEWPEWPEW");
+    // } catch (e) {
+    //     res.status(httpStatus.INTERNAL_SERVER_ERROR).end();
+    // }
+
+    return res.send("PEWPEWPEW"); 
+
+}
+
 export const getAllUsers = async (req: Request, res:Response) => {
 
     try{
@@ -14,8 +26,6 @@ export const getAllUsers = async (req: Request, res:Response) => {
     }catch(e){
         res.status(httpStatus.INTERNAL_SERVER_ERROR).end();
     }
-
-    res.json();
 }
 
 export const createUser = async (req:Request, res:Response) => {
